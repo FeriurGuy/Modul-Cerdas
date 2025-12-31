@@ -237,8 +237,8 @@ def login_page():
             
             with tab_signup:
                 with st.form("signup_form"):
-                    new_email = st.text_input("Email Baru")
-                    new_pass = st.text_input("Password Baru", type="password")
+                    new_email = st.text_input("Email Baru", placeholder="New Email")
+                    new_pass = st.text_input("Password Baru", type="password", placeholder="New Password")
                     confirm_pass = st.text_input("Ulangi Password", type="password")
                     st.markdown("<br>", unsafe_allow_html=True)
                     btn_register = st.form_submit_button("Daftar Sekarang", use_container_width=True)
