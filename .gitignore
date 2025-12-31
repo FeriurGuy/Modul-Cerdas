@@ -1,15 +1,15 @@
-# Abaikan folder Virtual Environment (WAJIB)
+# Virtual Environment
 venv/
 env/
 .venv/
 env_modulai/
 
-# Abaikan file Kunci Rahasia (WAJIB)
+# API
 .env
 
-# Abaikan file cache Python (Sampah sistem)
+# cache Python
 __pycache__/
 *.pyc
 
-# Abaikan file hasil generate PDF (Opsional, biar repo gak penuh)
+# generate PDF
 *.pdf
