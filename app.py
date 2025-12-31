@@ -29,31 +29,45 @@ def load_lottieurl(url: str):
 lottie_robot = load_lottieurl("https://lottie.host/5a07c584-6f3f-48db-9556-993f3503928e/wF8w8O9ZlW.json") 
 lottie_success = load_lottieurl("https://lottie.host/9c334346-6d60-44a6-98a9-448255959080/c8Z3Y7d5x9.json")
 
-# --- KONEKSI DATABASE & AI (SMART MODE) ---
+# --- KONEKSI DATABASE & AI (DIAGNOSA MODE) ---
 try:
-    # 1. Coba baca dari Streamlit Secrets (Untuk Cloud)
-    if "SUPABASE_URL" in st.secrets:
-        SUPA_URL = st.secrets["SUPABASE_URL"]
-        SUPA_KEY = st.secrets["SUPABASE_KEY"]
-        GEMINI_KEY = st.secrets["GEMINI_API_KEY"]
-    # 2. Kalau gak ada, baca dari .env (Untuk Laptop)
+    # 1. Ambil Kunci (Prioritas: Streamlit Secrets > Environment Variable)
+    # Kita pakai .get() biar gak error kalau kuncinya gak ada
+    if st.secrets:
+        # Hapus tanda kutip ganda jika user tidak sengaja memasukkannya di dalam string
+        SUPA_URL = st.secrets.get("SUPABASE_URL", "").replace('"', '').strip()
+        SUPA_KEY = st.secrets.get("SUPABASE_KEY", "").replace('"', '').strip()
+        GEMINI_KEY = st.secrets.get("GEMINI_API_KEY", "").replace('"', '').strip()
     else:
+        # Fallback ke laptop lokal
         load_dotenv()
-        SUPA_URL = os.getenv("SUPABASE_URL")
-        SUPA_KEY = os.getenv("SUPABASE_KEY")
-        GEMINI_KEY = os.getenv("GEMINI_API_KEY")
+        SUPA_URL = os.getenv("SUPABASE_URL", "").strip()
+        SUPA_KEY = os.getenv("SUPABASE_KEY", "").strip()
+        GEMINI_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 
-    # Inisialisasi
-    if not SUPA_URL or not GEMINI_KEY:
-        raise ValueError("Kunci Rahasia belum disetting!")
+    # 2. Cek Apakah Kunci Kosong? (Ini yang sering bikin gagal)
+    missing_keys = []
+    if not SUPA_URL: missing_keys.append("SUPABASE_URL")
+    if not SUPA_KEY: missing_keys.append("SUPABASE_KEY")
+    if not GEMINI_KEY: missing_keys.append("GEMINI_API_KEY")
 
+    if missing_keys:
+        st.error(f"❌ Gawat! Kunci rahasia berikut belum terbaca: {', '.join(missing_keys)}")
+        st.info("Cek lagi di Settings > Secrets di Streamlit Cloud ya.")
+        st.stop()
+
+    # 3. Tes Koneksi
     supabase: Client = create_client(SUPA_URL, SUPA_KEY)
     genai.configure(api_key=GEMINI_KEY)
     model = genai.GenerativeModel('gemini-2.5-flash')
     
+    # 4. Tes Panggilan Ringan (Ping)
+    # Kita coba akses dummy biar tau valid atau nggak
+    # (Opsional: Kalau ini error, berarti URL/Key valid tapi akses ditolak)
+    
 except Exception as e:
-    st.error(f"Gagal Koneksi: {e}")
-    st.info("Tips: Jika di Streamlit Cloud, pastikan sudah isi 'Secrets' di pengaturan App.")
+    st.error("❌ Terjadi Error saat Inisialisasi:")
+    st.code(str(e)) # Tampilkan pesan error aslinya biar jelas
     st.stop()
 
 # --- FUNGSI GENERATE PDF ---
