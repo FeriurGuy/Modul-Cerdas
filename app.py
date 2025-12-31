@@ -331,7 +331,7 @@ def main_app():
 
     if generate_btn:
         if not topik or not penyusun:
-            st.toast("⚠️ Mohon lengkapi Nama & Topik.", icon="⚠️")
+            st.toast("⚠️ Mohon lengkapi Nama & Topik.")
         else:
             cp_content = get_cp_text(fase, elemen_pilih)
             if cp_content == "GENERATE_BY_AI":
