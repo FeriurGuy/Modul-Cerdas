@@ -246,7 +246,7 @@ def login_page():
                         if new_pass != confirm_pass:
                             st.warning("Password tidak sama.")
                         elif not new_email or not new_pass:
-                            st.warning("Isi semua data.")
+                            st.warning("Isi semua data dulu bosQ")
                         else:
                             try:
                                 check = supabase.table('users').select("*").eq('email', new_email).execute()
