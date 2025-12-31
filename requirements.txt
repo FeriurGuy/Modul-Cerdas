@@ -2,6 +2,7 @@ streamlit
 google-generativeai
 supabase
 python-dotenv
-xhtml2pdf
+xhtml2pdf==0.2.11
+reportlab==3.6.12
 streamlit-lottie
 requests
