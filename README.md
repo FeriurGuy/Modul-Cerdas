@@ -1,6 +1,6 @@
 # 📖 Modul Cerdas
 
-**ModulAI Studio** adalah aplikasi berbasis web yang memanfaatkan kecerdasan buatan (AI) untuk membantu guru menyusun **Modul Ajar Kurikulum Merdeka** secara otomatis, terstruktur, dan siap cetak dalam format PDF resmi.
+**Modul Cerdas** adalah aplikasi berbasis web yang memanfaatkan kecerdasan buatan (AI) untuk membantu guru menyusun **Modul Ajar Kurikulum Merdeka** secara otomatis, terstruktur, dan siap cetak dalam format PDF resmi.
 
 ## Target Pengguna
 Aplikasi ini dirancang khusus untuk:
