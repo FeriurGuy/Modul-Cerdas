@@ -232,8 +232,8 @@ def login_page():
                                 st.rerun()
                             else:
                                 st.error("Email/Password salah.")
-                        except:
-                            st.error("Gagal koneksi database.")
+                        except Exception as e:
+                                st.error(str(e))
             
             with tab_signup:
                 with st.form("signup_form"):
