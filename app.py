@@ -29,13 +29,31 @@ def load_lottieurl(url: str):
 lottie_robot = load_lottieurl("https://lottie.host/5a07c584-6f3f-48db-9556-993f3503928e/wF8w8O9ZlW.json") 
 lottie_success = load_lottieurl("https://lottie.host/9c334346-6d60-44a6-98a9-448255959080/c8Z3Y7d5x9.json")
 
-# Koneksi Database & AI
+# --- KONEKSI DATABASE & AI (SMART MODE) ---
 try:
-    supabase: Client = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-    model = genai.GenerativeModel('gemini-2.5-flash') 
+    # 1. Coba baca dari Streamlit Secrets (Untuk Cloud)
+    if "SUPABASE_URL" in st.secrets:
+        SUPA_URL = st.secrets["SUPABASE_URL"]
+        SUPA_KEY = st.secrets["SUPABASE_KEY"]
+        GEMINI_KEY = st.secrets["GEMINI_API_KEY"]
+    # 2. Kalau gak ada, baca dari .env (Untuk Laptop)
+    else:
+        load_dotenv()
+        SUPA_URL = os.getenv("SUPABASE_URL")
+        SUPA_KEY = os.getenv("SUPABASE_KEY")
+        GEMINI_KEY = os.getenv("GEMINI_API_KEY")
+
+    # Inisialisasi
+    if not SUPA_URL or not GEMINI_KEY:
+        raise ValueError("Kunci Rahasia belum disetting!")
+
+    supabase: Client = create_client(SUPA_URL, SUPA_KEY)
+    genai.configure(api_key=GEMINI_KEY)
+    model = genai.GenerativeModel('gemini-2.5-flash')
+    
 except Exception as e:
-    st.error(f"System Error: {e}")
+    st.error(f"Gagal Koneksi: {e}")
+    st.info("Tips: Jika di Streamlit Cloud, pastikan sudah isi 'Secrets' di pengaturan App.")
     st.stop()
 
 # --- FUNGSI GENERATE PDF ---
