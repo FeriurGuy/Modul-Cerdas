@@ -107,92 +107,119 @@ def get_cp_text(fase, elemen):
 # 2. UI/UX "CLEAN AESTHETIC" STYLE
 st.markdown("""
 <style>
-    /* FONT UTAMA */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    /* IMPORT FONT KEREN */
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
     
     html, body, [class*="css"] { 
-        font-family: 'Plus Jakarta Sans', sans-serif; 
-        color: #0f172a; /* Warna Teks Gelap (Slate 900) */
+        font-family: 'Outfit', sans-serif; 
+        color: #334155; 
     }
     
-    /* BACKGROUND */
+    /* BACKGROUND GRADIENT HALUS */
     .stApp { 
-        background-color: #f8fafc; /* Slate 50 */
+        background: linear-gradient(135deg, #eef2ff 0%, #f1f5f9 100%);
+        background-attachment: fixed;
     }
     
-    /* CONTAINER KOTAK PUTIH ELEGAN */
+    /* CONTAINER/CARD YANG LEBIH POP-UP */
     div.stContainer { 
         background-color: #ffffff; 
-        border: 1px solid #e2e8f0; 
-        border-radius: 12px; 
-        padding: 30px; 
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
-        margin-bottom: 24px;
+        border: none;
+        border-radius: 20px; /* Sudut lebih bulat = lebih friendly */
+        padding: 35px; 
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01); /* Soft shadow */
+        margin-bottom: 25px;
+        transition: transform 0.2s ease-in-out;
     }
     
-    /* JUDUL HALAMAN */
+    /* EFEK HOVER DI CONTAINER BIAR INTERAKTIF */
+    div.stContainer:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* JUDUL DENGAN GRADASI WARNA (CATCHY) */
     h1 { 
-        color: #1e293b; 
+        background: linear-gradient(to right, #2563eb, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         font-weight: 800; 
-        letter-spacing: -1px;
-        font-size: 3rem !important;
+        letter-spacing: -0.5px;
+        font-size: 3.5rem !important;
+        padding-bottom: 10px;
     }
-    h2 { color: #334155; font-weight: 700; }
-    h3 { color: #475569; font-weight: 600; }
     
-    /* INPUT FIELDS (RAPI & JELAS) */
+    h2 { color: #1e293b; font-weight: 700; margin-top: 0; }
+    h3 { color: #475569; font-weight: 600; font-size: 1.1rem; }
+    
+    /* INPUT FIELDS YANG LEBIH MODERN */
     .stTextInput input, .stSelectbox div[data-baseweb="select"] { 
-        border-radius: 8px; 
-        border: 1px solid #cbd5e1; 
-        background-color: #ffffff;
-        color: #1e293b;
-        padding: 10px 12px;
-        transition: all 0.2s;
-    }
-    .stTextInput input:focus, .stSelectbox div[data-baseweb="select"]:focus-within { 
-        border-color: #2563eb; /* Biru Profesional */
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
+        border-radius: 12px; 
+        border: 2px solid #e2e8f0; 
+        background-color: #f8fafc;
+        color: #334155;
+        padding: 12px 15px;
+        font-size: 15px;
     }
     
-    /* TOMBOL UTAMA (SOLID BLUE) */
+    /* INPUT FOCUS STATE */
+    .stTextInput input:focus, .stSelectbox div[data-baseweb="select"]:focus-within { 
+        border-color: #6366f1; 
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); 
+    }
+    
+    /* TOMBOL UTAMA GRADIENT */
     .stButton button { 
-        background-color: #2563eb; 
+        background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
         color: white; 
         border: none; 
-        border-radius: 8px; 
+        border-radius: 12px; 
         padding: 0.8rem 2rem; 
         font-weight: 600; 
         font-size: 16px; 
+        letter-spacing: 0.5px;
         width: 100%; 
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.2s; 
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+        transition: all 0.3s ease; 
     }
+    
     .stButton button:hover { 
-        background-color: #1d4ed8; 
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
     }
     
     /* SIDEBAR */
     section[data-testid="stSidebar"] { 
         background-color: #ffffff; 
-        border-right: 1px solid #f1f5f9; 
+        border-right: none;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.03);
     }
-    
-    /* TABS */
-    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
+
+    /* CUSTOM TABS */
+    .stTabs [data-baseweb="tab-list"] { 
+        gap: 10px; 
+        border-bottom: 2px solid #f1f5f9;
+    }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 6px;
-        padding: 8px 16px;
-        background-color: transparent;
-        border: none;
-        color: #64748b;
+        border-radius: 8px 8px 0 0;
+        padding: 10px 20px;
         font-weight: 500;
+        border: none;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #eff6ff;
-        color: #2563eb;
+        background-color: #eef2ff;
+        color: #4f46e5;
         font-weight: 700;
+        border-bottom: 3px solid #4f46e5;
+    }
+
+    /* TEXT AREA LABEL */
+    label {
+        color: #64748b !important;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 8px;
     }
 
 </style>
